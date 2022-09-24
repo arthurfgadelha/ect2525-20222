@@ -1,26 +1,47 @@
 import React from 'react';
-import { StyleSheet, Text, Image ,View } from 'react-native';
+import { StyleSheet, Text, Image ,View, FlatList } from 'react-native';
 
 
 export default function Stories () {
-    return(
+    const stories = [
+      {
+      id: 1,
+      nome: 'UFRN',
+      src: require('../assets/imagens/ufrn.jpg'),
+    },
+    {
+      id: 2,
+      nome: 'Fisica',
+      src: require('../assets/imagens/fisica.jpg'),
+    },
+    {
+      id: 3,
+      nome: 'Reitoria',
+      src: require('../assets/imagens/reitoria.jpg'),
+    },
+    {
+      id: 4,
+      nome: 'ECT',
+      src: require('../assets/imagens/ect.jpg'),
+    },
+  ];
+  
+  function renderItem({item}) {
+    return <View style={styles.story}>
+    <Image style={styles.imgstory} source={item.src} />
+    <Text>{item.nome}</Text>
+  </View>
+  }
+  
+  return(
     <View style={styles.stories}>
-          <View style={styles.story}>
-            <Image style={styles.imgstory} source={require('../assets/imagens/ufrn.jpg')} />
-            <Text>UFRN</Text>
-          </View>
-          <View style={styles.story}>
-            <Image style={styles.imgstory} source={require('../assets/imagens/fisica.jpg')} />
-            <Text>Fisica</Text>
-          </View>
-          <View style={styles.story}>
-            <Image style={styles.imgstory} source={require('../assets/imagens/reitoria.jpg')} />
-            <Text>Reitoria</Text>
-          </View>
-          <View style={styles.story}>
-            <Image style={styles.imgstory} source={require('../assets/imagens/ect.jpg')} />
-            <Text>ECT</Text>
-          </View>
+          <FlatList
+            data={stories}
+            renderItem={renderItem}
+            keyExtractor={item =>item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          /> 
         </View>
     );
 }
