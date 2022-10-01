@@ -1,50 +1,30 @@
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, Image ,View, FlatList } from 'react-native';
-import React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function Feed() {
+  
+  const [feed, setFeed] = useState([]);
 
-  const feed = [
-    {
-    id: 1,
-    nome: 'UFRN',
-    imgPerfil: require('../assets/imagens/ufrn.jpg'),
-    img: require('../assets/imagens/ufrn.jpg'),
-    aspectRatio: 1.000,
-  },
-  {
-    id: 2,
-    nome: 'Fisica',
-    imgPerfil: require('../assets/imagens/fisica.jpg'),
-    img: require('../assets/imagens/fisica.jpg'),
-    aspectRatio: 1.566,
-  },
-  {
-    id: 3,
-    nome: 'Reitoria',
-    imgPerfil: require('../assets/imagens/reitoria.jpg'),
-    img: require('../assets/imagens/reitoria.jpg'),
-    aspectRatio: 2.005,
-  },
-  {
-    id: 4,
-    nome: 'ECT',
-    imgPerfil: require('../assets/imagens/ect.jpg'),
-    img: require('../assets/imagens/ect.jpg'),
-    aspectRatio: 1.788,
-  },
-];
-
-  function renderItem({item}){
+ useEffect(function(){
+   async function getData(){
+    const response = await fetch('https://mobile.ect.ufrn.br:3000/feed');
+    const feed = await response.json();
+    setFeed(feed);  
+  }
+  getData();
+  }, [])
+  
+  function renderItem({ item }){
     return <View style={styles.post}>
     <View style={styles.postheader}>
         <View style={styles.postheaderesquerda}>
-          <Image style={styles.postheaderimg} source={item.imgPerfil}/>
-          <Text>{item.nome}</Text>
+          <Image style={styles.postheaderimg} source={{ uri: item.imgPerfilUri }}/>
+          <Text>{item.nomeUsuario}</Text>
         </View>
         <FontAwesome5 name="ellipsis-h" size = {16} color="black"/>
     </View>
-    <Image style={styles.postimg} source={item.img}/>
+    <Image style={styles.postimg} aspectRatio={item.aspectRatio} source={{ uri: item.imgPostUri }}/>
     <View style={styles.footer}>
       <FontAwesome5 style={styles.footericon} name="heart" size = {36} color="black"/>
       <FontAwesome5 style={styles.footericon} name="comment" size = {36} color="black"/>
